@@ -48,3 +48,43 @@ table.insert(ctrls, {
   UserPin = true,
   PinStyle = "Both",
 })
+
+table.insert(ctrls, {
+  Name = "Up",
+  ControlType = "Button",
+  ButtonType = "Momentary",
+  Count = 1,
+  UserPin = true,
+  PinStyle = "Input",
+})
+
+table.insert(ctrls, {
+  Name = "Down",
+  ControlType = "Button",
+  ButtonType = "Momentary",
+  Count = 1,
+  UserPin = true,
+  PinStyle = "Input",
+})
+
+table.insert(ctrls, {
+  Name = "Hold",
+  ControlType = "Knob",
+  ControlUnit = "Float",
+  Count = 1,
+  UserPin = false,
+  PinStyle = "None",
+  Min = 0.005,
+  Max = 5,
+})
+
+table.insert(ctrls, {
+  Name = "Time",
+  ControlType = "Knob",
+  ControlUnit = "Float",
+  Count = 1,
+  UserPin = false,
+  PinStyle = "None",
+  Min = 0.25,
+  Max = 30,
+})
