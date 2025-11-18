@@ -1,0 +1,402 @@
+-- Basic Framework Plugin
+-- by QSC
+-- October 2020
+
+-- Information block for the plugin
+PluginInfo = {
+  Name = "RBLAJDA~Super Gain",
+  Version = "1.0",
+  BuildVersion = "1.0.0.2",
+  Id = "eadbc6a2-3b3c-4cf3-bd88-09273d1ad11f",
+  Author = "rblajda",
+  Description = "a better verison of the gain object"  
+}
+
+-- Define the color of the plugin object in the design
+function GetColor(props)
+  return { 102, 102, 102 }
+end
+
+-- The name that will initially display when dragged into a design
+function GetPrettyName(props)
+  return "Super Gain: v" .. PluginInfo.Version
+end
+
+-- Optional function used if plugin has multiple pages
+PageNames = { "Control", "Setup" }  --List the pages within the plugin
+function GetPages(props)
+  local pages = {}
+  for ix,name in ipairs(PageNames) do
+    table.insert(pages, {name = PageNames[ix]})
+  end
+  return pages
+end
+
+-- Optional function to define model if plugin supports more than one model
+function GetModel(props)
+  local model = {}
+  if props.Model ~= nil and props.Model.Value ~= "" then
+    table.insert(model, { props.Model.Value } )
+  else
+    table.insert(model, { "Base Model" } )
+  end
+ return model
+end
+
+-- Define User configurable Properties of the plugin
+function GetProperties()
+  local props = {}
+  table.insert(props, {
+    Name = "Debug Print",
+    Type = "enum",
+    Choices = {"None", "All", "Function Calls", "Tx", "Rx", "Tx/Rx"},
+    Value = "All"
+  })
+  return props
+end
+
+-- Optional function to define pins on the plugin that are not connected to a Control
+function GetPins(props)
+  local pins = {}
+  table.insert(pins,
+  {
+    Name = "Input A - Dry Feed",
+    Direction = "input",
+  })
+  
+  table.insert(pins,
+  {
+    Name = "Input B - Dry Feed [Optionally Post AEC Processing]",
+    Direction = "input",
+  })
+  
+  table.insert(pins,
+  {
+    Name = "Input C - Dry Feed [Optionally Post AEC Processing]",
+    Direction = "input",
+  })
+  
+  table.insert(pins,
+  {
+    Name = "Output A - Wet",
+    Direction = "output",
+  })
+  
+  table.insert(pins,
+  {
+    Name = "Output B - Pre-Fader (Post Mute)",
+    Direction = "output",
+  })
+  
+  table.insert(pins,
+  {
+    Name = "Output C - Pre-Fader (Post Mute)",
+    Direction = "output",
+  })
+  return pins
+end
+
+-- Optional function to update available properties when properties are altered by the user
+function RectifyProperties(props)
+  if props.plugin_show_debug.Value == false then 
+    props["Debug Print"].IsHidden = true 
+  end
+  return props
+end
+
+-- Optional function to define components used within the plugin
+function GetComponents(props)
+  local components = {}
+  GainMono = 1
+  GainStereo = 2
+  GainMultiChannel = 3
+  
+  table.insert(components , 
+  {
+    Name = "Main",
+    Type = "gain",
+    Properties =   
+    {
+      ["multi_channel_type"] = GainMono,
+      ["multi_channel_count"] = 1,
+    }
+  })
+  
+  table.insert(components, 
+  {
+    Name = "Passthrough",
+    Type = "gain",
+    Properties = 
+    {
+      ["multi_channel_type"] = GainMultiChannel,
+      ["multi_channel_count"] = 2,
+    }
+  })
+  return components
+end
+
+-- Optional function to define wiring of components used within the plugin
+function GetWiring(props)
+  local wiring = {}
+  --[full wet]
+  
+  table.insert( wiring, 
+  { 
+    "Input A - Dry Feed", 
+    "Main Input" 
+  })
+  
+  table.insert( wiring, 
+  { 
+    "Main Output", 
+    "Output A - Wet" 
+  })
+  
+  --[pre-fader listen post-mute]
+  
+  table.insert( wiring, 
+  { 
+    "Input B - Dry Feed [Optionally Post AEC Processing]", 
+    "Passthrough Input Channel 1" 
+  })
+  
+  table.insert( wiring, 
+  { 
+    "Input C - Dry Feed [Optionally Post AEC Processing]", 
+    "Passthrough Input Channel 2" 
+  })
+  
+  table.insert( wiring, 
+  { 
+    "Passthrough Output Channel 1",
+    "Output B - Pre-Fader (Post Mute)"
+  })
+  
+  table.insert( wiring, 
+  { 
+    "Passthrough Output Channel 2",
+    "Output C - Pre-Fader (Post Mute)"
+  })
+  return wiring
+end
+
+-- Defines the Controls used within the plugin
+function GetControls(props)
+  local ctrls = {}
+  table.insert(ctrls, {
+    Name = "MinimumGain",
+    ControlType = "Knob",
+    ControlUnit = "dB",
+    Count = 1,
+    UserPin = false,
+    PinStyle = "None",
+    Min = -100,
+    Max = -15,
+  })
+  
+  table.insert(ctrls, {
+    Name = "MaximumGain",
+    ControlType = "Knob",
+    ControlUnit = "dB",
+    Count = 1,
+    UserPin = false,
+    PinStyle = "None",
+    Min = 0,
+    Max = 20,
+  })
+  
+  table.insert(ctrls, {
+    Name = "Gain",
+    ControlType = "Knob",
+    ControlUnit = "Position",
+    Count = 1,
+    UserPin = false,
+    PinStyle = "None",
+  })
+  
+  table.insert(ctrls, {
+    Name = "GainExternal",
+    ControlType = "Knob",
+    ControlUnit = "dB",
+    Min = -100,
+    Max = 20,
+    Count = 1,
+    UserPin = true,
+    PinStyle = "Output",
+  })
+  
+  table.insert(ctrls, {
+    Name = "Mute",
+    ControlType = "Button",
+    ButtonType = "Toggle",
+    Count = 1,
+    UserPin = true,
+    PinStyle = "Both",
+  })
+  return ctrls
+end
+
+--Layout of controls and graphics for the plugin UI to display
+function GetControlLayout(props)
+  local layout = {}
+  local graphics = {}
+  local CurrentPage = PageNames[props["page_index"].Value]
+  
+  if CurrentPage == "Control" then
+    gainControl = { 
+      Style = "Fader",
+      Position = {25, 5},
+      Size = {75, 250},
+      Color = {124, 155, 207},
+    }
+  
+    muteControl = { 
+      Style = "Button",
+      Position = {25, 255},
+      Size = {75, 50},
+      Color = {223, 0, 36},
+      FontSize = 18,
+      Legend = "Mute",
+      PrettyName = "Controls~Mute"
+    }
+  
+    externalGainControl = { 
+      Style = "None",
+      Position = {5, 5},
+      Size = {25, 25},
+      FontSize = 18,
+      PrettyName = "Controls~Gain"
+    }
+  
+    layout['Gain'] = gainControl
+    layout['Mute'] = muteControl
+    layout['GainExternal'] = externalGainControl
+  
+  elseif CurrentPage == "Setup" then
+    table.insert(graphics, {
+      Type = "Label",
+      Text = "Minimum Gain",
+      Position = {5, 5},
+      Size = {100, 50},
+      Color = {0, 0, 0},
+      FontSize = 18,
+      HTextAlign = "Center"
+    })
+  
+    table.insert(graphics, {
+      Type = "Label",
+      Text = "Maximum Gain",
+      Position = {105, 5},
+      Size = {100, 50},
+      Color = {0, 0, 0},
+      FontSize = 18,
+      HTextAlign = "Center"
+    })
+  
+    minGainControl = { 
+      Style = "Knob",
+      Position = {5 + (50 / 2), 60},
+      Size = {50, 50},
+      PrettyName = "Configuration~MinimumGain"
+    }
+    
+    maxGainControl = { 
+      Style = "Knob",
+      Position = {5 + 50 + (105 / 2) + (50 / 2), 60},
+      Size = {50, 50},
+      PrettyName = "Configuration~MaximumGain"
+    }
+  
+    layout['MinimumGain'] = minGainControl
+    layout['MaximumGain'] = maxGainControl
+  end
+  return layout, graphics
+end
+
+--Start event based logic
+if Controls then
+  LoggingLevelAll, LoggingLevelFunction, LoggingLevelTransmit, LoggingLevelReceive, LoggingLevelTranscieve = false, false, false, false, false
+  
+  function HandleMinimumGain(gain)
+    if LoggingLevelFunction then print("Minumum Gain Updated: "..gain.Value) end
+    UpdateVolume(Controls.Gain)
+  end
+  
+  function HandleMaximumGain(gain)
+    if LoggingLevelFunction then print("Maximum Gain Updated: "..gain.Value) end
+    UpdateVolume(Controls.Gain)
+  end
+  
+  function HandleGain(gain)
+    if LoggingLevelFunction then print("Gain Updated: "..gain.Value) end
+    UpdateVolume(gain)
+  end
+  
+  function HandleGainExternal(gain)
+    if LoggingLevelFunction then print("Bypassing Event Handler for GainExternal") end
+  end
+  
+  function HandleMute(mute)
+    if LoggingLevelFunction then print("Mute Updated: "..tostring(mute.Boolean)) end
+    Main.mute.Boolean = mute.Boolean
+    if LoggingLevelAll then print("Main -> mute: "..tostring(mute.Boolean)) end
+    Passthrough.mute.Boolean = mute.Boolean
+    if LoggingLevelAll then print("Passthrough -> mute: "..tostring(mute.Boolean)) end
+  end
+  
+  function UpdateVolume(gain)
+    vol = ScaleVolume(gain.Position)
+    if LoggingLevelFunction then print(string.format("Setting Main Gain: %f dB", vol)) end
+    Main.gain.Value = vol
+    if LoggingLevelFunction then print(string.format("Setting GainExternal: %f dB", vol)) end
+    Controls.GainExternal.Value = vol
+  end
+  
+  function ScaleVolume(position)
+    if LoggingLevelFunction then print("Attempting To Scale User Fader Level: "..position) end
+  
+    scaledVolume = Controls.MinimumGain.Value + (Controls.MaximumGain.Value - Controls.MinimumGain.Value) * position
+  
+    if LoggingLevelAll then print(string.format("%f = %f + (%f - %f) * %f", scaledVolume, Controls.MinimumGain.Value, Controls.MinimumGain.Value, Controls.MaximumGain.Value, position)) end
+    
+    return scaledVolume
+  end
+  
+  function ConfigureLoggingLevels(level)
+    print("Logging Level: "..level)
+    if level == "All" then
+      LoggingLevelAll, LoggingLevelFunction, LoggingLevelTransmit, LoggingLevelReceive, LoggingLevelTranscieve = true, true, true, true, true
+    elseif level == "Function Calls" then
+      LoggingLevelFunction = true
+    elseif level == "Tx" then
+      LoggingLevelTransmit =  true
+    elseif level == "Rx" then
+      LoggingLevelReceive = true
+    elseif level == "Tx/Rx" then
+      LoggingLevelTransmit, LoggingLevelReceive, LoggingLevelTranscieve = true, true, true
+    elseif level == "None" then
+      LoggingLevelAll, LoggingLevelFunction, LoggingLevelTransmit, LoggingLevelReceive, LoggingLevelTranscieve = false, false, false, false, false
+    else
+      print("Logging Level: "..level.." Unknown!!")
+    end
+  end
+  
+  function Initialize()
+    --[configure logging]
+    ConfigureLoggingLevels(Properties['Debug Print'].Value)
+    --[set up event handlers]
+    Controls.MinimumGain.EventHandler = HandleMinimumGain
+    Controls.MaximumGain.EventHandler = HandleMaximumGain
+    Controls.Gain.EventHandler = HandleGain
+    Controls.Mute.EventHandler = HandleMute
+    Controls.GainExternal.EventHandler = HandleGainExternal
+    --[handle initial values]
+    HandleMinimumGain(Controls.MinimumGain)
+    HandleMaximumGain(Controls.MaximumGain)
+    HandleGain(Controls.Gain)
+    HandleMute(Controls.Mute)
+  end
+  
+  --[run the initial setup logic]
+  Initialize()
+end
