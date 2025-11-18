@@ -26,9 +26,31 @@ if CurrentPage == "Control" then
     PrettyName = "Controls~Gain"
   }
 
+  upControl = { 
+    Style = "Button",
+    Position = {5 + 75 + 5 + 5 + 5, 5},
+    Size = {75, 50},
+    Color = {124, 155, 207},
+    FontSize = 18,
+    Legend = "Up",
+    PrettyName = "Controls~Up"
+  }
+
+  downControl = { 
+    Style = "Down",
+    Position = {5 + 75 + 5 + 5 + 5, 5 + (250 - 50)},
+    Size = {75, 50},
+    Color = {124, 155, 207},
+    FontSize = 18,
+    Legend = "Down",
+    PrettyName = "Controls~Down"
+  }
+
   layout['Gain'] = gainControl
   layout['Mute'] = muteControl
   layout['GainExternal'] = externalGainControl
+  layout['Up'] = upControl
+  layout['Down'] = downControl
 
 elseif CurrentPage == "Setup" then
   table.insert(graphics, {
@@ -65,6 +87,44 @@ elseif CurrentPage == "Setup" then
     PrettyName = "Configuration~MaximumGain"
   }
 
+  table.insert(graphics, {
+    Type = "Label",
+    Text = "Hold Time",
+    Position = {5, 5 + 60 + 50},
+    Size = {100, 50},
+    Color = {0, 0, 0},
+    FontSize = 18,
+    HTextAlign = "Center"
+  })
+
+  table.insert(graphics, {
+    Type = "Label",
+    Text = "Ramp Time",
+    Position = {105, 5 + 60 + 50},
+    Size = {100, 50},
+    Color = {0, 0, 0},
+    FontSize = 18,
+    HTextAlign = "Center"
+  })
+
+  holdTime = { 
+    Style = "Text",
+    Position = {5, 5 + 60 + 50 + 50},
+    Size = {100, 50},
+    FontSize = 18,
+    PrettyName = "Configuration~Hold"
+  }
+
+  rampTime = { 
+    Style = "Text",
+    Position = {5 + (105 / 2) + (100 / 2), 5 + 60 + 50 + 50},
+    Size = {100, 50},
+    FontSize = 18,
+    PrettyName = "Configuration~Time"
+  }
+
   layout['MinimumGain'] = minGainControl
   layout['MaximumGain'] = maxGainControl
+  layout['Hold'] = holdTime
+  layout['Time'] = rampTime
 end
