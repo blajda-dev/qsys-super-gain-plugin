@@ -13,6 +13,20 @@ table.insert(components ,
   }
 })
 
+table.insert(components , 
+{
+  Name = "RampController",
+  Type = "gain",
+  Properties =   
+  {
+    ["multi_channel_type"] = GainMono,
+    ["multi_channel_count"] = 1,
+    ["enable_stepper"] = true,
+    ["step_mode"] = 0,
+  }
+})
+
+
 table.insert(components, 
 {
   Name = "Passthrough",
