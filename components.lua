@@ -26,7 +26,6 @@ table.insert(components ,
   }
 })
 
-
 table.insert(components, 
 {
   Name = "Passthrough",
