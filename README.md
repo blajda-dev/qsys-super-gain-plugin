@@ -4,9 +4,9 @@
 - Input A
   - routed to Output A - Wet
 - Input B
-  - routed to output B - Pre-Fader (Post-Mute)
+  - routed to Output B - Pre-Fader (Post-Mute)
 - Input C
-  - routed to output C - Pre-Fader (Post-Mute)
+  - routed to Output C - Pre-Fader (Post-Mute)
 
 ## Output Pins
 - Output A - Wet
