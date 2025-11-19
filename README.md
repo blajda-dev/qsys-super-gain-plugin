@@ -7,12 +7,19 @@
   - routed to output b
 - Input C
   - routed to output c
-  
+
 ## Output Pins
 - Output A - Wet
   - a full wet feed
     - Post-Fader, Post-Mute
 - Output B - PFL / Post-Mute
+  - this output is intended to feed any device that requires a pre-fader, post-mute feed such as:
+    - assisted listening devices
+    - vtc / atc codecs
+    - soft conferencing hardware
+    - recording hardware
+    - an automixer that feeds hardware that needs this type of feed downstream
+- Output C - PFL / Post-Mute
   - this output is intended to feed any device that requires a pre-fader, post-mute feed such as:
     - assisted listening devices
     - vtc / atc codecs
