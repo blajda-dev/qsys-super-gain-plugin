@@ -6,6 +6,7 @@ if CurrentPage == "Control" then
     Position = {25, 5},
     Size = {75, 250},
     Color = {124, 155, 207},
+    PrettyName = "Controls~Fader Position"
   }
 
   muteControl = { 
@@ -18,12 +19,20 @@ if CurrentPage == "Control" then
     PrettyName = "Controls~Mute"
   }
 
-  externalGainControl = { 
+  limitedGainOutput = { 
     Style = "None",
     Position = {5, 5},
     Size = {25, 25},
     FontSize = 18,
-    PrettyName = "Controls~Gain"
+    PrettyName = "Controls~Gain Output"
+  }
+
+  limitedGainInput = { 
+    Style = "None",
+    Position = {5, 5},
+    Size = {25, 25},
+    FontSize = 18,
+    PrettyName = "Controls~Gain Input"
   }
 
   upControl = { 
@@ -48,7 +57,8 @@ if CurrentPage == "Control" then
 
   layout['Gain'] = gainControl
   layout['Mute'] = muteControl
-  layout['GainExternal'] = externalGainControl
+  layout['LimitedGainOutput'] = limitedGainOutput
+  layout['LimitedGainInput'] = limitedGainInput
   layout['Up'] = upControl
   layout['Down'] = downControl
 
