@@ -1,4 +1,28 @@
 table.insert(ctrls, {
+  Name = "LimitedGainOutput",
+  ControlType = "Knob",
+  ControlUnit = "dB",
+  Min = -100,
+  Max = 20,
+  Count = 1,
+  UserPin = true,
+  PinStyle = "Output",
+})
+
+table.insert(ctrls, {
+  Name = "LimitedGainInput",
+  ControlType = "Knob",
+  ControlUnit = "dB",
+  Min = -100,
+  Max = 20,
+  Count = 1,
+  UserPin = true,
+  PinStyle = "Input",
+})
+
+--------------[[]]
+
+table.insert(ctrls, {
   Name = "MinimumGain",
   ControlType = "Knob",
   ControlUnit = "dB",
@@ -20,6 +44,8 @@ table.insert(ctrls, {
   Max = 20,
 })
 
+--------------[[]]
+
 table.insert(ctrls, {
   Name = "Gain",
   ControlType = "Knob",
@@ -27,17 +53,6 @@ table.insert(ctrls, {
   Count = 1,
   UserPin = false,
   PinStyle = "None",
-})
-
-table.insert(ctrls, {
-  Name = "GainExternal",
-  ControlType = "Knob",
-  ControlUnit = "dB",
-  Min = -100,
-  Max = 20,
-  Count = 1,
-  UserPin = true,
-  PinStyle = "Output",
 })
 
 table.insert(ctrls, {
