@@ -7,6 +7,7 @@
   - routed to output b
 - Input C
   - routed to output c
+  
 ## Output Pins
 - Output A - Wet
   - a full wet feed
@@ -20,7 +21,14 @@
     - an automixer that feeds hardware that needs this type of feed downstream
 
 ## Control Pins
-- Gain
+- Gain Input
+  - allow this object to adjust based on the gain of another object
+  - this will ignore out of range values
+- Gain Output
   - force other objects to bend to the will of this gain object, output only
 - Mute
   - force or feed a mute using the input or output pins
+- Up
+  - cause the gain to ramp up
+- Down
+  - cause the gain to ramp down
