@@ -200,7 +200,7 @@ function Initialize()
   --[check the ui gain object]
   HandleFaderChange(Controls.Gain)
   --[check the input pin]
-  HandleGainExternalInput(Controls.LimitedGainInput)
+  --HandleGainExternalInput(Controls.LimitedGainInput)
 end
 
 --[run the initial setup logic]
