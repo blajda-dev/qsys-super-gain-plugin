@@ -1,5 +1,5 @@
 table.insert(ctrls, {
-  Name = "LimitedGainOutput",
+  Name = "gain.limited.output",
   ControlType = "Knob",
   ControlUnit = "dB",
   Min = -100,
@@ -10,7 +10,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "LimitedGainInput",
+  Name = "gain.limited.input",
   ControlType = "Knob",
   ControlUnit = "dB",
   Min = -100,
@@ -23,18 +23,19 @@ table.insert(ctrls, {
 --------------[[]]
 
 table.insert(ctrls, {
-  Name = "MinimumGain",
+  Name = "gain.minimum",
   ControlType = "Knob",
   ControlUnit = "dB",
   Count = 1,
   UserPin = false,
   PinStyle = "None",
   Min = -100,
-  Max = -15,
+  Max = -5,
+  DefaultValue = -40
 })
 
 table.insert(ctrls, {
-  Name = "MaximumGain",
+  Name = "gain.maximum",
   ControlType = "Knob",
   ControlUnit = "dB",
   Count = 1,
@@ -42,12 +43,13 @@ table.insert(ctrls, {
   PinStyle = "None",
   Min = 0,
   Max = 20,
+  DefaultValue = 5
 })
 
 --------------[[]]
 
 table.insert(ctrls, {
-  Name = "Gain",
+  Name = "gain",
   ControlType = "Knob",
   ControlUnit = "Position",
   Count = 1,
@@ -56,7 +58,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "Mute",
+  Name = "mute",
   ControlType = "Button",
   ButtonType = "Toggle",
   Count = 1,
@@ -65,7 +67,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "Up",
+  Name = "stepper.increase",
   ControlType = "Button",
   ButtonType = "Momentary",
   Count = 1,
@@ -74,7 +76,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "Down",
+  Name = "stepper.decrease",
   ControlType = "Button",
   ButtonType = "Momentary",
   Count = 1,
@@ -83,7 +85,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "Hold",
+  Name = "stepper.hold.off",
   ControlType = "Knob",
   ControlUnit = "Float",
   Count = 1,
@@ -94,7 +96,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "Time",
+  Name = "stepper.time",
   ControlType = "Knob",
   ControlUnit = "Float",
   Count = 1,
@@ -102,4 +104,5 @@ table.insert(ctrls, {
   PinStyle = "None",
   Min = 0.25,
   Max = 30,
+  DefaultValue = 5
 })

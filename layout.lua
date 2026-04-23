@@ -6,7 +6,7 @@ if CurrentPage == "Control" then
     Position = {25, 5},
     Size = {75, 250},
     Color = {124, 155, 207},
-    PrettyName = "Controls~Fader Position"
+    PrettyName = "Gain"
   }
 
   muteControl = { 
@@ -16,7 +16,7 @@ if CurrentPage == "Control" then
     Color = {223, 0, 36},
     FontSize = 18,
     Legend = "Mute",
-    PrettyName = "Controls~Mute"
+    PrettyName = "Mute"
   }
 
   limitedGainOutput = { 
@@ -24,7 +24,7 @@ if CurrentPage == "Control" then
     Position = {5, 5},
     Size = {25, 25},
     FontSize = 18,
-    PrettyName = "Controls~Gain Output"
+    PrettyName = "Gain Output"
   }
 
   limitedGainInput = { 
@@ -32,7 +32,7 @@ if CurrentPage == "Control" then
     Position = {5, 5},
     Size = {25, 25},
     FontSize = 18,
-    PrettyName = "Controls~Gain Input"
+    PrettyName = "Gain Input"
   }
 
   upControl = { 
@@ -42,7 +42,7 @@ if CurrentPage == "Control" then
     Color = {124, 155, 207},
     FontSize = 18,
     Legend = "Up",
-    PrettyName = "Controls~Up"
+    PrettyName = "Increase"
   }
 
   downControl = { 
@@ -52,15 +52,15 @@ if CurrentPage == "Control" then
     Color = {124, 155, 207},
     FontSize = 18,
     Legend = "Down",
-    PrettyName = "Controls~Down"
+    PrettyName = "Decrease"
   }
 
-  layout['Gain'] = gainControl
-  layout['Mute'] = muteControl
-  layout['LimitedGainOutput'] = limitedGainOutput
-  layout['LimitedGainInput'] = limitedGainInput
-  layout['Up'] = upControl
-  layout['Down'] = downControl
+  layout['gain'] = gainControl
+  layout['mute'] = muteControl
+  layout['gain.limited.output'] = limitedGainOutput
+  layout['gain.limited.input'] = limitedGainInput
+  layout['stepper.increase'] = upControl
+  layout['stepper.decrease'] = downControl
 
 elseif CurrentPage == "Setup" then
   table.insert(graphics, {
@@ -87,14 +87,14 @@ elseif CurrentPage == "Setup" then
     Style = "Knob",
     Position = {5 + (50 / 2), 60},
     Size = {50, 50},
-    PrettyName = "Configuration~MinimumGain"
+    PrettyName = "Configuration~Minimum Gain"
   }
   
   maxGainControl = { 
     Style = "Knob",
     Position = {5 + 50 + (105 / 2) + (50 / 2), 60},
     Size = {50, 50},
-    PrettyName = "Configuration~MaximumGain"
+    PrettyName = "Configuration~Maximum Gain"
   }
 
   table.insert(graphics, {
@@ -122,7 +122,7 @@ elseif CurrentPage == "Setup" then
     Position = {5, 5 + 60 + 50 + 50},
     Size = {100, 50},
     FontSize = 18,
-    PrettyName = "Configuration~Hold"
+    PrettyName = "Hold Off"
   }
 
   rampTime = { 
@@ -130,11 +130,11 @@ elseif CurrentPage == "Setup" then
     Position = {5 + (105 / 2) + (100 / 2), 5 + 60 + 50 + 50},
     Size = {100, 50},
     FontSize = 18,
-    PrettyName = "Configuration~Time"
+    PrettyName = "Time"
   }
 
-  layout['MinimumGain'] = minGainControl
-  layout['MaximumGain'] = maxGainControl
-  layout['Hold'] = holdTime
-  layout['Time'] = rampTime
+  layout['gain.minimum'] = minGainControl
+  layout['gain.maximum'] = maxGainControl
+  layout['stepper.hold.off'] = holdTime
+  layout['stepper.time'] = rampTime
 end
