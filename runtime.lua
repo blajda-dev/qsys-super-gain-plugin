@@ -195,8 +195,11 @@ function Initialize()
   --[check the mute state first]
   HandleMute(Controls['mute']) 
   --[set the min-max next, to make sure scaling is correct]
-  HandleMinimumGain(Controls.MinimumGain)
-  HandleMaximumGain(Controls.MaximumGain)
+  HandleMinimumGain(Controls['gain.minimum'])
+  HandleMaximumGain(Controls['gain.maximum'])
+  --[handle ramp time and hold off defaults]
+  HandleRampHold(Controls['stepper.hold.off'])
+  HandleRampTime( Controls['stepper.time'])
   --[check the ui gain object]
   HandleFaderChange(Controls['gain'])
   --[check the input pin]
