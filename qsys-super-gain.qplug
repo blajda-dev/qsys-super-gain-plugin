@@ -5,7 +5,7 @@
 -- Information block for the plugin
 PluginInfo = {
   Name = "RBLAJDA~Super Gain",
-  Version = "2.0",
+  Version = "3.0",
   BuildVersion = "1.0.0.2",
   Id = "eadbc6a2-3b3c-4cf3-bd88-09273d1ad11f",
   Author = "rblajda",
@@ -107,9 +107,9 @@ end
 -- Optional function to define components used within the plugin
 function GetComponents(props)
   local components = {}
-  GainMono = 1
-  GainStereo = 2
-  GainMultiChannel = 3
+  Mono = 1
+  Stereo = 2
+  MultiChannel = 3
   
   table.insert(components , 
   {
@@ -117,7 +117,7 @@ function GetComponents(props)
     Type = "gain",
     Properties =   
     {
-      ["multi_channel_type"] = GainMono,
+      ["multi_channel_type"] = Mono,
       ["multi_channel_count"] = 1,
     }
   })
@@ -128,7 +128,7 @@ function GetComponents(props)
     Type = "gain",
     Properties =   
     {
-      ["multi_channel_type"] = GainMono,
+      ["multi_channel_type"] = Mono,
       ["multi_channel_count"] = 1,
       ["enable_stepper"] = true,
       ["step_mode"] = 0,
@@ -141,8 +141,32 @@ function GetComponents(props)
     Type = "gain",
     Properties = 
     {
-      ["multi_channel_type"] = GainMultiChannel,
+      ["multi_channel_type"] = MultiChannel,
       ["multi_channel_count"] = 2,
+    }
+  })
+  
+  table.insert(components,
+  {
+    Name = "Peak",
+    Type = "meter2",
+    Properties =
+    {
+      ['multi_channel_type'] = MultiChannel,
+      ['multi_channel_count'] = 3,
+      ['meter_type'] = 1
+    }
+  })
+  
+  table.insert(components,
+  {
+    Name = "RMS",
+    Type = "meter2",
+    Properties =
+    {
+      ['multi_channel_type'] = MultiChannel,
+      ['multi_channel_count'] = 3,
+      ['meter_type'] = 2
     }
   })
   return components
@@ -162,7 +186,9 @@ function GetWiring(props)
   table.insert( wiring, 
   { 
     "Main Output", 
-    "Output A - Wet" 
+    "Output A - Wet",
+    "Peak Input 1 Meter",
+    "RMS Input 1 Meter"
   })
   
   --[pre-fader listen post-mute]
@@ -170,25 +196,29 @@ function GetWiring(props)
   table.insert( wiring, 
   { 
     "Input B - Dry Feed [Optionally Post AEC Processing]", 
-    "Passthrough Input Channel 1" 
+    "Passthrough Input Channel 1" ,
   })
   
   table.insert( wiring, 
   { 
     "Input C - Dry Feed [Optionally Post AEC Processing]", 
-    "Passthrough Input Channel 2" 
+    "Passthrough Input Channel 2"
   })
   
   table.insert( wiring, 
   { 
     "Passthrough Output Channel 1",
-    "Output B - Pre-Fader (Post Mute)"
+    "Output B - Pre-Fader (Post Mute)",
+    "Peak Input 2 Meter",
+    "RMS Input 2 Meter"
   })
   
   table.insert( wiring, 
   { 
     "Passthrough Output Channel 2",
-    "Output C - Pre-Fader (Post Mute)"
+    "Output C - Pre-Fader (Post Mute)",
+    "Peak Input 3 Meter",
+    "RMS Input 3 Meter"
   })
   return wiring
 end
@@ -197,7 +227,7 @@ end
 function GetControls(props)
   local ctrls = {}
   table.insert(ctrls, {
-    Name = "gain.limited.output",
+    Name = "gain_limited_output",
     ControlType = "Knob",
     ControlUnit = "dB",
     Min = -100,
@@ -208,7 +238,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "gain.limited.input",
+    Name = "gain_limited_input",
     ControlType = "Knob",
     ControlUnit = "dB",
     Min = -100,
@@ -221,7 +251,7 @@ function GetControls(props)
   --------------[[]]
   
   table.insert(ctrls, {
-    Name = "gain.minimum",
+    Name = "gain_minimum",
     ControlType = "Knob",
     ControlUnit = "dB",
     Count = 1,
@@ -233,7 +263,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "gain.maximum",
+    Name = "gain_maximum",
     ControlType = "Knob",
     ControlUnit = "dB",
     Count = 1,
@@ -265,7 +295,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "stepper.increase",
+    Name = "stepper_increase",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -274,7 +304,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "stepper.decrease",
+    Name = "stepper_decrease",
     ControlType = "Button",
     ButtonType = "Momentary",
     Count = 1,
@@ -283,7 +313,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "stepper.hold.off",
+    Name = "stepper_hold_off",
     ControlType = "Knob",
     ControlUnit = "Float",
     Count = 1,
@@ -294,7 +324,7 @@ function GetControls(props)
   })
   
   table.insert(ctrls, {
-    Name = "stepper.time",
+    Name = "stepper_time",
     ControlType = "Knob",
     ControlUnit = "Float",
     Count = 1,
@@ -303,6 +333,24 @@ function GetControls(props)
     Min = 0.25,
     Max = 30,
     DefaultValue = 5
+  })
+  
+  table.insert(ctrls, {
+    Name = "output_peak_meter",
+    ControlType = "Indicator",
+    IndicatorType = "Meter",
+    Count = 3,
+    UserPin = false,
+    PinStyle = "None",
+  })
+  
+  table.insert(ctrls, {
+    Name = "output_rms_meter",
+    ControlType = "Indicator",
+    IndicatorType = "Meter",
+    Count = 3,
+    UserPin = false,
+    PinStyle = "None",
   })
   return ctrls
 end
@@ -350,7 +398,7 @@ function GetControlLayout(props)
   
     upControl = { 
       Style = "Button",
-      Position = {5 + 75 + 5 + 5 + 5, 5},
+      Position = {95, 5},
       Size = {75, 50},
       Color = {124, 155, 207},
       FontSize = 18,
@@ -359,21 +407,104 @@ function GetControlLayout(props)
     }
   
     downControl = { 
-      Style = "Down",
-      Position = {5 + 75 + 5 + 5 + 5, 5 + (250 - 50)},
+      Style = "Button",
+      Position = {95, 5 + (250 - 50)},
       Size = {75, 50},
       Color = {124, 155, 207},
       FontSize = 18,
       Legend = "Down",
       PrettyName = "Decrease"
     }
+    
+    table.insert(graphics, {
+      Type = "Label",
+      Text = "Peak Meters",
+      Position = {95 + 75 + 5, 5},
+      Size = {75 + (5 * 3), 50},
+      Color = {0, 0, 0},
+      FontSize = 18,
+      HTextAlign = "Center"
+    })
+  
+    outputAPeakMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~Peak~Output A"
+    }
+  
+    outputBPeakMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5 + 25 + 5, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~Peak~Output B"
+    }
+  
+    outputCPeakMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~Peak~Output C"
+    }
+  
+    table.insert(graphics, {
+      Type = "Label",
+      Text = "RMS Meters",
+      Position = {95 + 75 + 5 + ((25 + 5) * 3), 5},
+      Size = {75 + (5 * 3), 50},
+      Color = {0, 0, 0},
+      FontSize = 18,
+      HTextAlign = "Center"
+    })
+  
+    outputARMSMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~RMS~Output A"
+    }
+  
+    outputBRMSMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~RMS~Output B"
+    }
+  
+    outputCRMSMeter = { 
+      Style = "Meter",
+      MeterStyle = "Level",
+      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
+      Size = {25, 250},
+      Color = {124, 155, 207},
+      PrettyName = "Meter~RMS~Output C"
+    }
+  
+    layout['output_peak_meter 1'] = outputAPeakMeter
+    layout['output_peak_meter 2'] = outputBPeakMeter
+    layout['output_peak_meter 3'] = outputCPeakMeter
+  
+    layout['output_rms_meter 1'] = outputARMSMeter
+    layout['output_rms_meter 2'] = outputBRMSMeter
+    layout['output_rms_meter 3'] = outputCRMSMeter
   
     layout['gain'] = gainControl
     layout['mute'] = muteControl
-    layout['gain.limited.output'] = limitedGainOutput
-    layout['gain.limited.input'] = limitedGainInput
-    layout['stepper.increase'] = upControl
-    layout['stepper.decrease'] = downControl
+  
+    layout['gain_limited_output'] = limitedGainOutput
+    layout['gain_limited_input'] = limitedGainInput
+    layout['stepper_increase'] = upControl
+    layout['stepper_decrease'] = downControl
   
   elseif CurrentPage == "Setup" then
     table.insert(graphics, {
@@ -446,10 +577,10 @@ function GetControlLayout(props)
       PrettyName = "Time"
     }
   
-    layout['gain.minimum'] = minGainControl
-    layout['gain.maximum'] = maxGainControl
-    layout['stepper.hold.off'] = holdTime
-    layout['stepper.time'] = rampTime
+    layout['gain_minimum'] = minGainControl
+    layout['gain_maximum'] = maxGainControl
+    layout['stepper_hold_off'] = holdTime
+    layout['stepper_time'] = rampTime
   end
   return layout, graphics
 end
@@ -513,29 +644,29 @@ if Controls then
     if LoggingLevelFunction then print(string.format("Ramp Up -> %s", tostring(btn.Boolean))) end 
     
     if (Controls['stepper.decrease'].Boolean == false) then
-      if RampController['gain'].Value <= Controls['gain.maximum'].Value then
+      if RampController['gain'].Value <= Controls['gain_maximum'].Value then
         RampController['stepper.increase'].Boolean = btn.Boolean
       else
         RampController['stepper.increase'].Boolean = false
         if LoggingLevelAll then print(string.format("Cannot Ramp Up, Max Gain Hit!")) end
       end
     else
-      if LoggingLevelAll then print(string.format("Cannot Ramp Up While Ramp Down -> %s", tostring(Controls['stepper.decrease'].Boolean))) end
+      if LoggingLevelAll then print(string.format("Cannot Ramp Up While Ramp Down -> %s", tostring(Controls['stepper_decrease'].Boolean))) end
     end
   end
   
   function HandleRampDown(btn)
     if LoggingLevelFunction then print(string.format("Ramp Down -> %s", tostring(btn.Boolean))) end
   
-    if (Controls['stepper.increase'].Boolean == false) then
-      if RampController['gain'].Value >= Controls['gain.minimum'].Value then
+    if (Controls['stepper_increase'].Boolean == false) then
+      if RampController['gain'].Value >= Controls['gain_minimum'].Value then
         RampController['stepper.decrease'].Boolean = btn.Boolean
       else
         RampController['stepper.decrease'].Boolean = false
         if LoggingLevelAll then print(string.format("Cannot Ramp Down, Min Gain Hit!")) end
       end
     else
-      if LoggingLevelAll then print(string.format("Cannot Ramp Down While Ramp Up -> %s", tostring(Controls['stepper.increase'].Boolean))) end
+      if LoggingLevelAll then print(string.format("Cannot Ramp Down While Ramp Up -> %s", tostring(Controls['stepper_increase'].Boolean))) end
     end
   end
   
@@ -567,7 +698,7 @@ if Controls then
   end
   
   function SynchronizeVolume(vol)
-    val = math.min(Controls['gain.maximum'].Value, math.max(Controls['gain.minimum'].Value, vol))
+    val = math.min(Controls['gain_maximum'].Value, math.max(Controls['gain_minimum'].Value, vol))
     --[set the actual gain object to the attentuation value required]
     if LoggingLevelFunction then print(string.format("Setting Main Gain: %f dB", val)) end
     Main['gain'].Value = val
@@ -579,15 +710,15 @@ if Controls then
   
     --[sets the output knob to the same value so other devices could synchronize to this level]
     if LoggingLevelFunction then print(string.format("Setting Limited Gain Output: %f dB", val)) end
-    Controls['gain.limited.output'].Value = val
+    Controls['gain_limited_output'].Value = val
   end
   
   function ConvertPositionToDecibel(position)
     if LoggingLevelFunction then print("Attempting To Convert Position: "..position) end
   
-    decibel = Controls['gain.minimum'].Value + (Controls['gain.maximum'].Value - Controls['gain.minimum'].Value) * position
+    decibel = Controls['gain_minimum'].Value + (Controls['gain_maximum'].Value - Controls['gain_minimum'].Value) * position
   
-    if LoggingLevelAll then print(string.format("%f = %f + (%f - %f) * %f", decibel, Controls['gain.minimum'].Value, Controls['gain.minimum'].Value, Controls['gain.maximum'].Value, position)) end
+    if LoggingLevelAll then print(string.format("%f = %f + (%f - %f) * %f", decibel, Controls['gain_minimum'].Value, Controls['gain_minimum'].Value, Controls['gain_maximum'].Value, position)) end
     
     return decibel
   end
@@ -595,9 +726,9 @@ if Controls then
   function ConvertDecibelToPosition(decibel)
     if LoggingLevelFunction then print("Attempting To Convert Decibel: "..decibel.." dB") end
   
-    position = (decibel - Controls['gain.minimum'].Value) / (Controls['gain.maximum'].Value - Controls['gain.minimum'].Value)
+    position = (decibel - Controls['gain_minimum'].Value) / (Controls['gain_maximum'].Value - Controls['gain_minimum'].Value)
   
-    if LoggingLevelAll then print(string.format("%f = (%f - %f) / (%f - %f)", position, decibel, Controls['gain.minimum'].Value, Controls['gain.maximum'].Value, Controls['gain.minimum'].Value)) end
+    if LoggingLevelAll then print(string.format("%f = (%f - %f) / (%f - %f)", position, decibel, Controls['gain_minimum'].Value, Controls['gain_maximum'].Value, Controls['gain_minimum'].Value)) end
   
     return position
   end
@@ -628,8 +759,8 @@ if Controls then
     --[set up event handlers]
     
     --[configuration event handlers]
-    Controls['gain.minimum'].EventHandler = HandleMinimumGain
-    Controls['gain.maximum'].EventHandler = HandleMaximumGain
+    Controls['gain_minimum'].EventHandler = HandleMinimumGain
+    Controls['gain_maximum'].EventHandler = HandleMaximumGain
     
     --[user event handlers]
     Controls['gain'].EventHandler = HandleFaderChange
@@ -639,29 +770,29 @@ if Controls then
     RampController['gain'].EventHandler = HandleRampPositionChange
     
     --[allow external devices to provide us with an update]
-    Controls['gain.limited.input'].EventHandler = HandleGainExternalInput
+    Controls['gain_limited_input'].EventHandler = HandleGainExternalInput
     
     --[ramp events]
-    Controls['stepper.hold.off'].EventHandler = HandleRampHold
+    Controls['stepper_hold_off'].EventHandler = HandleRampHold
     
-    Controls['stepper.time'].EventHandler = HandleRampTime
+    Controls['stepper_time'].EventHandler = HandleRampTime
     
-    Controls['stepper.increase'].EventHandler = HandleRampUp
-    Controls['stepper.decrease'].EventHandler = HandleRampDown
+    Controls['stepper_increase'].EventHandler = HandleRampUp
+    Controls['stepper_decrease'].EventHandler = HandleRampDown
   
     --[handle initial values]
     --[check the mute state first]
     HandleMute(Controls['mute']) 
     --[set the min-max next, to make sure scaling is correct]
-    HandleMinimumGain(Controls['gain.minimum'])
-    HandleMaximumGain(Controls['gain.maximum'])
+    HandleMinimumGain(Controls['gain_minimum'])
+    HandleMaximumGain(Controls['gain_maximum'])
     --[handle ramp time and hold off defaults]
-    HandleRampHold(Controls['stepper.hold.off'])
-    HandleRampTime( Controls['stepper.time'])
+    HandleRampHold(Controls['stepper_hold_off'])
+    HandleRampTime( Controls['stepper_time'])
     --[check the ui gain object]
     HandleFaderChange(Controls['gain'])
     --[check the input pin]
-    --HandleGainExternalInput(Controls['gain.limited.input'])
+    --HandleGainExternalInput(Controls['gain_limited_input'])
   end
   
   --[run the initial setup logic]
