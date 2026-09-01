@@ -3,7 +3,7 @@
 
 FOR /F "tokens=*" %%g IN ('powershell "(new-object -COM Shell.Application).Namespace(0x05).Self.Path"') do (SET DocumentsFolder=%%g)
 
-if not exist "%DocumentsFolder%\QSC\Q-Sys Designer\Plugins\%~2" mkdir "%DocumentsFolder%\QSC\Q-Sys Designer\Plugins\%~2"
+if not exist "%DocumentsFolder%\QSC\Plugins\%~2" mkdir "%DocumentsFolder%\QSC\Plugins\%~2"
 
 :: This line writes/overwrites any existing file without locking it
 ::      This introduced errors where on a file changed notification, TYPE wasn't finished, and QSD would see a partial script and
@@ -13,4 +13,4 @@ if not exist "%DocumentsFolder%\QSC\Q-Sys Designer\Plugins\%~2" mkdir "%Document
 :: As a solution, this line was added to write/overwrite files and lock them so that QSD couldn't access them until it was finished.
 ::      QSD was then throwing an access error while the file was being written, so I added code in C# to catch access denied errors,
 ::      in favour of waiting for the next changed notification that allowed the file to be read (i.e. file copying finished)
-COPY /Y "%~1\%~2.qplug" "%DocumentsFolder%\QSC\Q-Sys Designer\Plugins\%~2\%~2.qplug"
+COPY /Y "%~1\%~2.qplug" "%DocumentsFolder%\QSC\Plugins\%~2\%~2.qplug"
