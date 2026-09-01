@@ -1,5 +1,5 @@
 table.insert(ctrls, {
-  Name = "gain.limited.output",
+  Name = "gain_limited_output",
   ControlType = "Knob",
   ControlUnit = "dB",
   Min = -100,
@@ -10,7 +10,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "gain.limited.input",
+  Name = "gain_limited_input",
   ControlType = "Knob",
   ControlUnit = "dB",
   Min = -100,
@@ -23,7 +23,7 @@ table.insert(ctrls, {
 --------------[[]]
 
 table.insert(ctrls, {
-  Name = "gain.minimum",
+  Name = "gain_minimum",
   ControlType = "Knob",
   ControlUnit = "dB",
   Count = 1,
@@ -35,7 +35,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "gain.maximum",
+  Name = "gain_maximum",
   ControlType = "Knob",
   ControlUnit = "dB",
   Count = 1,
@@ -67,7 +67,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "stepper.increase",
+  Name = "stepper_increase",
   ControlType = "Button",
   ButtonType = "Momentary",
   Count = 1,
@@ -76,7 +76,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "stepper.decrease",
+  Name = "stepper_decrease",
   ControlType = "Button",
   ButtonType = "Momentary",
   Count = 1,
@@ -85,7 +85,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "stepper.hold.off",
+  Name = "stepper_hold_off",
   ControlType = "Knob",
   ControlUnit = "Float",
   Count = 1,
@@ -96,7 +96,7 @@ table.insert(ctrls, {
 })
 
 table.insert(ctrls, {
-  Name = "stepper.time",
+  Name = "stepper_time",
   ControlType = "Knob",
   ControlUnit = "Float",
   Count = 1,

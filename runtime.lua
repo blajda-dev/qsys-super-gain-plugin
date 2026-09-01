@@ -55,29 +55,29 @@ function HandleRampUp(btn)
   if LoggingLevelFunction then print(string.format("Ramp Up -> %s", tostring(btn.Boolean))) end 
   
   if (Controls['stepper.decrease'].Boolean == false) then
-    if RampController['gain'].Value <= Controls['gain.maximum'].Value then
+    if RampController['gain'].Value <= Controls['gain_maximum'].Value then
       RampController['stepper.increase'].Boolean = btn.Boolean
     else
       RampController['stepper.increase'].Boolean = false
       if LoggingLevelAll then print(string.format("Cannot Ramp Up, Max Gain Hit!")) end
     end
   else
-    if LoggingLevelAll then print(string.format("Cannot Ramp Up While Ramp Down -> %s", tostring(Controls['stepper.decrease'].Boolean))) end
+    if LoggingLevelAll then print(string.format("Cannot Ramp Up While Ramp Down -> %s", tostring(Controls['stepper_decrease'].Boolean))) end
   end
 end
 
 function HandleRampDown(btn)
   if LoggingLevelFunction then print(string.format("Ramp Down -> %s", tostring(btn.Boolean))) end
 
-  if (Controls['stepper.increase'].Boolean == false) then
-    if RampController['gain'].Value >= Controls['gain.minimum'].Value then
+  if (Controls['stepper_increase'].Boolean == false) then
+    if RampController['gain'].Value >= Controls['gain_minimum'].Value then
       RampController['stepper.decrease'].Boolean = btn.Boolean
     else
       RampController['stepper.decrease'].Boolean = false
       if LoggingLevelAll then print(string.format("Cannot Ramp Down, Min Gain Hit!")) end
     end
   else
-    if LoggingLevelAll then print(string.format("Cannot Ramp Down While Ramp Up -> %s", tostring(Controls['stepper.increase'].Boolean))) end
+    if LoggingLevelAll then print(string.format("Cannot Ramp Down While Ramp Up -> %s", tostring(Controls['stepper_increase'].Boolean))) end
   end
 end
 
@@ -109,7 +109,7 @@ function UpdateGain(gain)
 end
 
 function SynchronizeVolume(vol)
-  val = math.min(Controls['gain.maximum'].Value, math.max(Controls['gain.minimum'].Value, vol))
+  val = math.min(Controls['gain_maximum'].Value, math.max(Controls['gain_minimum'].Value, vol))
   --[set the actual gain object to the attentuation value required]
   if LoggingLevelFunction then print(string.format("Setting Main Gain: %f dB", val)) end
   Main['gain'].Value = val
@@ -121,15 +121,15 @@ function SynchronizeVolume(vol)
 
   --[sets the output knob to the same value so other devices could synchronize to this level]
   if LoggingLevelFunction then print(string.format("Setting Limited Gain Output: %f dB", val)) end
-  Controls['gain.limited.output'].Value = val
+  Controls['gain_limited_output'].Value = val
 end
 
 function ConvertPositionToDecibel(position)
   if LoggingLevelFunction then print("Attempting To Convert Position: "..position) end
 
-  decibel = Controls['gain.minimum'].Value + (Controls['gain.maximum'].Value - Controls['gain.minimum'].Value) * position
+  decibel = Controls['gain_minimum'].Value + (Controls['gain_maximum'].Value - Controls['gain_minimum'].Value) * position
 
-  if LoggingLevelAll then print(string.format("%f = %f + (%f - %f) * %f", decibel, Controls['gain.minimum'].Value, Controls['gain.minimum'].Value, Controls['gain.maximum'].Value, position)) end
+  if LoggingLevelAll then print(string.format("%f = %f + (%f - %f) * %f", decibel, Controls['gain_minimum'].Value, Controls['gain_minimum'].Value, Controls['gain_maximum'].Value, position)) end
   
   return decibel
 end
@@ -137,9 +137,9 @@ end
 function ConvertDecibelToPosition(decibel)
   if LoggingLevelFunction then print("Attempting To Convert Decibel: "..decibel.." dB") end
 
-  position = (decibel - Controls['gain.minimum'].Value) / (Controls['gain.maximum'].Value - Controls['gain.minimum'].Value)
+  position = (decibel - Controls['gain_minimum'].Value) / (Controls['gain_maximum'].Value - Controls['gain_minimum'].Value)
 
-  if LoggingLevelAll then print(string.format("%f = (%f - %f) / (%f - %f)", position, decibel, Controls['gain.minimum'].Value, Controls['gain.maximum'].Value, Controls['gain.minimum'].Value)) end
+  if LoggingLevelAll then print(string.format("%f = (%f - %f) / (%f - %f)", position, decibel, Controls['gain_minimum'].Value, Controls['gain_maximum'].Value, Controls['gain_minimum'].Value)) end
 
   return position
 end
@@ -170,8 +170,8 @@ function Initialize()
   --[set up event handlers]
   
   --[configuration event handlers]
-  Controls['gain.minimum'].EventHandler = HandleMinimumGain
-  Controls['gain.maximum'].EventHandler = HandleMaximumGain
+  Controls['gain_minimum'].EventHandler = HandleMinimumGain
+  Controls['gain_maximum'].EventHandler = HandleMaximumGain
   
   --[user event handlers]
   Controls['gain'].EventHandler = HandleFaderChange
@@ -181,29 +181,29 @@ function Initialize()
   RampController['gain'].EventHandler = HandleRampPositionChange
   
   --[allow external devices to provide us with an update]
-  Controls['gain.limited.input'].EventHandler = HandleGainExternalInput
+  Controls['gain_limited_input'].EventHandler = HandleGainExternalInput
   
   --[ramp events]
-  Controls['stepper.hold.off'].EventHandler = HandleRampHold
+  Controls['stepper_hold_off'].EventHandler = HandleRampHold
   
-  Controls['stepper.time'].EventHandler = HandleRampTime
+  Controls['stepper_time'].EventHandler = HandleRampTime
   
-  Controls['stepper.increase'].EventHandler = HandleRampUp
-  Controls['stepper.decrease'].EventHandler = HandleRampDown
+  Controls['stepper_increase'].EventHandler = HandleRampUp
+  Controls['stepper_decrease'].EventHandler = HandleRampDown
 
   --[handle initial values]
   --[check the mute state first]
   HandleMute(Controls['mute']) 
   --[set the min-max next, to make sure scaling is correct]
-  HandleMinimumGain(Controls['gain.minimum'])
-  HandleMaximumGain(Controls['gain.maximum'])
+  HandleMinimumGain(Controls['gain_minimum'])
+  HandleMaximumGain(Controls['gain_maximum'])
   --[handle ramp time and hold off defaults]
-  HandleRampHold(Controls['stepper.hold.off'])
-  HandleRampTime( Controls['stepper.time'])
+  HandleRampHold(Controls['stepper_hold_off'])
+  HandleRampTime( Controls['stepper_time'])
   --[check the ui gain object]
   HandleFaderChange(Controls['gain'])
   --[check the input pin]
-  --HandleGainExternalInput(Controls['gain.limited.input'])
+  --HandleGainExternalInput(Controls['gain_limited_input'])
 end
 
 --[run the initial setup logic]

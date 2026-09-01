@@ -37,7 +37,7 @@ if CurrentPage == "Control" then
 
   upControl = { 
     Style = "Button",
-    Position = {5 + 75 + 5 + 5 + 5, 5},
+    Position = {95, 5},
     Size = {75, 50},
     Color = {124, 155, 207},
     FontSize = 18,
@@ -46,8 +46,8 @@ if CurrentPage == "Control" then
   }
 
   downControl = { 
-    Style = "Down",
-    Position = {5 + 75 + 5 + 5 + 5, 5 + (250 - 50)},
+    Style = "Button",
+    Position = {95, 5 + (250 - 50)},
     Size = {75, 50},
     Color = {124, 155, 207},
     FontSize = 18,
@@ -139,10 +139,11 @@ if CurrentPage == "Control" then
 
   layout['gain'] = gainControl
   layout['mute'] = muteControl
-  layout['gain.limited.output'] = limitedGainOutput
-  layout['gain.limited.input'] = limitedGainInput
-  layout['stepper.increase'] = upControl
-  layout['stepper.decrease'] = downControl
+
+  layout['gain_limited_output'] = limitedGainOutput
+  layout['gain_limited_input'] = limitedGainInput
+  layout['stepper_increase'] = upControl
+  layout['stepper_decrease'] = downControl
 
 elseif CurrentPage == "Setup" then
   table.insert(graphics, {
@@ -215,8 +216,8 @@ elseif CurrentPage == "Setup" then
     PrettyName = "Time"
   }
 
-  layout['gain.minimum'] = minGainControl
-  layout['gain.maximum'] = maxGainControl
-  layout['stepper.hold.off'] = holdTime
-  layout['stepper.time'] = rampTime
+  layout['gain_minimum'] = minGainControl
+  layout['gain_maximum'] = maxGainControl
+  layout['stepper_hold_off'] = holdTime
+  layout['stepper_time'] = rampTime
 end
