@@ -112,8 +112,8 @@ table.insert(ctrls, {
   ControlType = "Indicator",
   IndicatorType = "Meter",
   Count = 3,
-  UserPin = false,
-  PinStyle = "None",
+  UserPin = true,
+  PinStyle = "Output",
 })
 
 table.insert(ctrls, {
@@ -121,6 +121,6 @@ table.insert(ctrls, {
   ControlType = "Indicator",
   IndicatorType = "Meter",
   Count = 3,
-  UserPin = false,
-  PinStyle = "None",
+  UserPin = true,
+  PinStyle = "Output",
 })
