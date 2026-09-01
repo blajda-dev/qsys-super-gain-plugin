@@ -91,13 +91,13 @@ function HandleRampPositionChange(ramp)
 end
 
 function HandlePeakLevelChanged(level, channel)
-  if LoggingLevelFunction then print(string.format("Channel %d Peak Level Updated: %d Value // %d Position", channel, level.Value, level.Position)) end
-  Controls[string.format('output_peak_meter %d', channel)].Value = level.Value
+  if LoggingLevelFunction then print(string.format("Channel %d Peak Level Updated: %.2f Value // %.2f Position", channel, level.Value, level.Position)) end
+  Controls['output_peak_meter'][channel].Value = level.Value
 end
 
 function HandleRMSLevelChanged(level, channel)
-  if LoggingLevelFunction then print(string.format("Channel %d RMS Level Updated: %d Value // %d Position", channel, level.Value, level.Position)) end
-  Controls[string.format('output_rms_meter %d', channel)].Value = level.Value
+  if LoggingLevelFunction then print(string.format("Channel %d RMS Level Updated: %.2f Value // %.2f Position", channel, level.Value, level.Position)) end
+  Controls['output_rms_meter'][channel].Value = level.Value
 end
 
 function UpdateFaderPosition(position)
@@ -220,6 +220,13 @@ function Initialize()
   HandleRampTime( Controls['stepper_time'])
   --[check the ui gain object]
   HandleFaderChange(Controls['gain'])
+
+  HandlePeakLevelChanged(Peak['peak.1'], 1) 
+  HandlePeakLevelChanged(Peak['peak.2'], 2)
+  HandlePeakLevelChanged(Peak['peak.3'], 3) 
+  HandleRMSLevelChanged(RMS['rms.1'], 1)
+  HandleRMSLevelChanged(RMS['rms.2'], 2)
+  HandleRMSLevelChanged(RMS['rms.3'], 3)
   --[check the input pin]
   --HandleGainExternalInput(Controls['gain_limited_input'])
 end
