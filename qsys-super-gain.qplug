@@ -166,7 +166,7 @@ function GetComponents(props)
     {
       ['multi_channel_type'] = MultiChannel,
       ['multi_channel_count'] = 3,
-      ['meter_type'] = 2
+      ['meter_type'] = 1
     }
   })
   return components
@@ -428,7 +428,7 @@ function GetControlLayout(props)
   
     outputAPeakMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -437,7 +437,7 @@ function GetControlLayout(props)
   
     outputBPeakMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5 + 25 + 5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -446,7 +446,7 @@ function GetControlLayout(props)
   
     outputCPeakMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -465,7 +465,7 @@ function GetControlLayout(props)
   
     outputARMSMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -474,7 +474,7 @@ function GetControlLayout(props)
   
     outputBRMSMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -483,7 +483,7 @@ function GetControlLayout(props)
   
     outputCRMSMeter = { 
       Style = "Meter",
-      MeterStyle = "Level",
+      MeterStyle = "Standard",
       Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
@@ -643,7 +643,7 @@ if Controls then
   function HandleRampUp(btn)
     if LoggingLevelFunction then print(string.format("Ramp Up -> %s", tostring(btn.Boolean))) end 
     
-    if (Controls['stepper.decrease'].Boolean == false) then
+    if (Controls['stepper_decrease'].Boolean == false) then
       if RampController['gain'].Value <= Controls['gain_maximum'].Value then
         RampController['stepper.increase'].Boolean = btn.Boolean
       else
@@ -677,6 +677,14 @@ if Controls then
     
     UpdateFaderPosition(position)
     UpdateGain(Controls['gain'])
+  end
+  
+  function HandlePeakLevelChanged(level, channel)
+    Controls[string.format('output_peak_meter %d', channel)].Value = level
+  end
+  
+  function HandleRMSLevelChanged(level, channel)
+    Controls[string.format('output_rms_meter %d', channel)].Value = level
   end
   
   function UpdateFaderPosition(position)
@@ -765,6 +773,14 @@ if Controls then
     --[user event handlers]
     Controls['gain'].EventHandler = HandleFaderChange
     Controls['mute'].EventHandler = HandleMute
+  
+    Peak['peak.1'].EventHandler = function(level) HandlePeakLevelChanged(level, 1) end
+    Peak['peak.2'].EventHandler = function(level) HandlePeakLevelChanged(level, 2) end
+    Peak['peak.3'].EventHandler = function(level) HandlePeakLevelChanged(level, 3) end
+  
+    RMS['rms.1'].EventHandler = function(level) HandleRMSLevelChanged(level, 1) end
+    RMS['rms.2'].EventHandler = function(level) HandleRMSLevelChanged(level, 2) end
+    RMS['rms.3'].EventHandler = function(level) HandleRMSLevelChanged(level, 3) end
   
     --[subscribe to a change in the ramp gain, and forward that through to the update volume logic as required]
     RampController['gain'].EventHandler = HandleRampPositionChange
