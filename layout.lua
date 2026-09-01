@@ -67,7 +67,7 @@ if CurrentPage == "Control" then
 
   outputAPeakMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
@@ -76,7 +76,7 @@ if CurrentPage == "Control" then
 
   outputBPeakMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5 + 25 + 5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
@@ -85,7 +85,7 @@ if CurrentPage == "Control" then
 
   outputCPeakMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
@@ -104,7 +104,7 @@ if CurrentPage == "Control" then
 
   outputARMSMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
@@ -113,7 +113,7 @@ if CurrentPage == "Control" then
 
   outputBRMSMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
@@ -122,7 +122,7 @@ if CurrentPage == "Control" then
 
   outputCRMSMeter = { 
     Style = "Meter",
-    MeterStyle = "Level",
+    MeterStyle = "Standard",
     Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
