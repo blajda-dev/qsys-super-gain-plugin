@@ -91,11 +91,11 @@ function HandleRampPositionChange(ramp)
 end
 
 function HandlePeakLevelChanged(level, channel)
-  Controls[string.format('output_peak_meter %d', channel)].Value = level
+  Controls[string.format('output_peak_meter %d', channel)].Value = level.Value
 end
 
 function HandleRMSLevelChanged(level, channel)
-  Controls[string.format('output_rms_meter %d', channel)].Value = level
+  Controls[string.format('output_rms_meter %d', channel)].Value = level.Value
 end
 
 function UpdateFaderPosition(position)
