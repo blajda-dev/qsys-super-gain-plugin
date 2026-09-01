@@ -57,6 +57,6 @@ table.insert(components,
   {
     ['multi_channel_type'] = MultiChannel,
     ['multi_channel_count'] = 3,
-    ['meter_type'] = 2
+    ['meter_type'] = 1
   }
 })
