@@ -106,3 +106,21 @@ table.insert(ctrls, {
   Max = 30,
   DefaultValue = 5
 })
+
+table.insert(ctrls, {
+  Name = "output_peak_meter",
+  ControlType = "Indicator",
+  IndicatorType = "Meter",
+  Count = 3,
+  UserPin = false,
+  PinStyle = "None",
+})
+
+table.insert(ctrls, {
+  Name = "output_rms_meter",
+  ControlType = "Indicator",
+  IndicatorType = "Meter",
+  Count = 3,
+  UserPin = false,
+  PinStyle = "None",
+})

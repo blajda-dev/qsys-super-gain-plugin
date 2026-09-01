@@ -54,6 +54,88 @@ if CurrentPage == "Control" then
     Legend = "Down",
     PrettyName = "Decrease"
   }
+  
+  table.insert(graphics, {
+    Type = "Label",
+    Text = "Peak Meters",
+    Position = {95 + 75 + 5, 5},
+    Size = {75 + (5 * 3), 50},
+    Color = {0, 0, 0},
+    FontSize = 18,
+    HTextAlign = "Center"
+  })
+
+  outputAPeakMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~Peak~Output A"
+  }
+
+  outputBPeakMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5 + 25 + 5, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~Peak~Output B"
+  }
+
+  outputCPeakMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~Peak~Output C"
+  }
+
+  table.insert(graphics, {
+    Type = "Label",
+    Text = "RMS Meters",
+    Position = {95 + 75 + 5 + ((25 + 5) * 3), 5},
+    Size = {75 + (5 * 3), 50},
+    Color = {0, 0, 0},
+    FontSize = 18,
+    HTextAlign = "Center"
+  })
+
+  outputARMSMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~RMS~Output A"
+  }
+
+  outputBRMSMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~RMS~Output B"
+  }
+
+  outputCRMSMeter = { 
+    Style = "Meter",
+    MeterStyle = "Level",
+    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
+    Size = {25, 250},
+    Color = {124, 155, 207},
+    PrettyName = "Meter~RMS~Output C"
+  }
+
+  layout['output_peak_meter 1'] = outputAPeakMeter
+  layout['output_peak_meter 2'] = outputBPeakMeter
+  layout['output_peak_meter 3'] = outputCPeakMeter
+
+  layout['output_rms_meter 1'] = outputARMSMeter
+  layout['output_rms_meter 2'] = outputBRMSMeter
+  layout['output_rms_meter 3'] = outputCRMSMeter
 
   layout['gain'] = gainControl
   layout['mute'] = muteControl
