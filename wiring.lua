@@ -19,13 +19,13 @@ table.insert( wiring,
 table.insert( wiring, 
 { 
   "Input B - Dry Feed [Optionally Post AEC Processing]", 
-  "Passthrough Input Channel 1" 
+  "Passthrough Input Channel 1" ,
 })
 
 table.insert( wiring, 
 { 
   "Input C - Dry Feed [Optionally Post AEC Processing]", 
-  "Passthrough Input Channel 2" 
+  "Passthrough Input Channel 2"
 })
 
 table.insert( wiring, 
