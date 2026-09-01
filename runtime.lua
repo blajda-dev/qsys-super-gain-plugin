@@ -54,7 +54,7 @@ end
 function HandleRampUp(btn)
   if LoggingLevelFunction then print(string.format("Ramp Up -> %s", tostring(btn.Boolean))) end 
   
-  if (Controls['stepper.decrease'].Boolean == false) then
+  if (Controls['stepper_decrease'].Boolean == false) then
     if RampController['gain'].Value <= Controls['gain_maximum'].Value then
       RampController['stepper.increase'].Boolean = btn.Boolean
     else
