@@ -91,10 +91,12 @@ function HandleRampPositionChange(ramp)
 end
 
 function HandlePeakLevelChanged(level, channel)
+  if LoggingLevelFunction then print(string.format("Channel %d Peak Level Updated: %d Value // %d Position", channel, level.Value, level.Position)) end
   Controls[string.format('output_peak_meter %d', channel)].Value = level.Value
 end
 
 function HandleRMSLevelChanged(level, channel)
+  if LoggingLevelFunction then print(string.format("Channel %d RMS Level Updated: %d Value // %d Position", channel, level.Value, level.Position)) end
   Controls[string.format('output_rms_meter %d', channel)].Value = level.Value
 end
 
