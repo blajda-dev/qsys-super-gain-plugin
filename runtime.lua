@@ -187,13 +187,15 @@ function Initialize()
   Controls['gain'].EventHandler = HandleFaderChange
   Controls['mute'].EventHandler = HandleMute
 
-  Peak['peak.1'].EventHandler = function(level) HandlePeakLevelChanged(level, 1) end
-  Peak['peak.2'].EventHandler = function(level) HandlePeakLevelChanged(level, 2) end
-  Peak['peak.3'].EventHandler = function(level) HandlePeakLevelChanged(level, 3) end
+  Peak['meter.1'].EventHandler = function(level) HandlePeakLevelChanged(level, 1) end
+  Peak['meter.2'].EventHandler = function(level) HandlePeakLevelChanged(level, 2) end
+  Peak['meter.3'].EventHandler = function(level) HandlePeakLevelChanged(level, 3) end
+  Peak['select'].String = 'Peak'
 
-  RMS['rms.1'].EventHandler = function(level) HandleRMSLevelChanged(level, 1) end
-  RMS['rms.2'].EventHandler = function(level) HandleRMSLevelChanged(level, 2) end
-  RMS['rms.3'].EventHandler = function(level) HandleRMSLevelChanged(level, 3) end
+  RMS['meter.1'].EventHandler = function(level) HandleRMSLevelChanged(level, 1) end
+  RMS['meter.2'].EventHandler = function(level) HandleRMSLevelChanged(level, 2) end
+  RMS['meter.3'].EventHandler = function(level) HandleRMSLevelChanged(level, 3) end
+  RMS['select'].String = 'RMS'
 
   --[subscribe to a change in the ramp gain, and forward that through to the update volume logic as required]
   RampController['gain'].EventHandler = HandleRampPositionChange
