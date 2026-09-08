@@ -23,7 +23,7 @@ function GetPrettyName(props)
 end
 
 -- Optional function used if plugin has multiple pages
-PageNames = { "Control", "Setup" }  --List the pages within the plugin
+PageNames = { "Control", "Setup", "Metering"}  --List the pages within the plugin
 function GetPages(props)
   local pages = {}
   for ix,name in ipairs(PageNames) do
@@ -187,8 +187,8 @@ function GetWiring(props)
   { 
     "Main Output", 
     "Output A - Wet",
-    "Peak Input 1 Meter",
-    "RMS Input 1 Meter"
+    "Peak Input 1",
+    "RMS Input 1"
   })
   
   --[pre-fader listen post-mute]
@@ -209,16 +209,16 @@ function GetWiring(props)
   { 
     "Passthrough Output Channel 1",
     "Output B - Pre-Fader (Post Mute)",
-    "Peak Input 2 Meter",
-    "RMS Input 2 Meter"
+    "Peak Input 2",
+    "RMS Input 2"
   })
   
   table.insert( wiring, 
   { 
     "Passthrough Output Channel 2",
     "Output C - Pre-Fader (Post Mute)",
-    "Peak Input 3 Meter",
-    "RMS Input 3 Meter"
+    "Peak Input 3",
+    "RMS Input 3"
   })
   return wiring
 end
@@ -415,21 +415,30 @@ function GetControlLayout(props)
       Legend = "Down",
       PrettyName = "Decrease"
     }
-    
+  
+    layout['gain'] = gainControl
+    layout['mute'] = muteControl
+  
+    layout['gain_limited_output'] = limitedGainOutput
+    layout['gain_limited_input'] = limitedGainInput
+    layout['stepper_increase'] = upControl
+    layout['stepper_decrease'] = downControl
+  
+  elseif CurrentPage == "Metering" then
     table.insert(graphics, {
       Type = "Label",
       Text = "Peak Meters",
-      Position = {95 + 75 + 5, 5},
+      Position = {5, 5},
       Size = {75 + (5 * 3), 50},
       Color = {0, 0, 0},
       FontSize = 18,
       HTextAlign = "Center"
     })
   
-    outputAPeakMeter = { 
+      outputAPeakMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5, 55},
+      Position = {5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~Peak~Output A"
@@ -438,7 +447,7 @@ function GetControlLayout(props)
     outputBPeakMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5 + 25 + 5, 55},
+      Position = {5 + 25 + 5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~Peak~Output B"
@@ -447,7 +456,7 @@ function GetControlLayout(props)
     outputCPeakMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
+      Position = {5 + 5 + 25 + 5 + 25, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~Peak~Output C"
@@ -456,7 +465,7 @@ function GetControlLayout(props)
     table.insert(graphics, {
       Type = "Label",
       Text = "RMS Meters",
-      Position = {95 + 75 + 5 + ((25 + 5) * 3), 5},
+      Position = {5 + ((25 + 5) * 3), 5},
       Size = {75 + (5 * 3), 50},
       Color = {0, 0, 0},
       FontSize = 18,
@@ -466,7 +475,7 @@ function GetControlLayout(props)
     outputARMSMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
+      Position = {5 + ((25 + 5) * 3) + 5, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~RMS~Output A"
@@ -475,7 +484,7 @@ function GetControlLayout(props)
     outputBRMSMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
+      Position = {5 + ((25 + 5) * 3) + 25 + 10, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~RMS~Output B"
@@ -484,7 +493,7 @@ function GetControlLayout(props)
     outputCRMSMeter = { 
       Style = "Meter",
       MeterStyle = "Standard",
-      Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
+      Position = {5 + ((25 + 5) * 3) + 50 + 15, 55},
       Size = {25, 250},
       Color = {124, 155, 207},
       PrettyName = "Meter~RMS~Output C"
@@ -497,15 +506,6 @@ function GetControlLayout(props)
     layout['output_rms_meter 1'] = outputARMSMeter
     layout['output_rms_meter 2'] = outputBRMSMeter
     layout['output_rms_meter 3'] = outputCRMSMeter
-  
-    layout['gain'] = gainControl
-    layout['mute'] = muteControl
-  
-    layout['gain_limited_output'] = limitedGainOutput
-    layout['gain_limited_input'] = limitedGainInput
-    layout['stepper_increase'] = upControl
-    layout['stepper_decrease'] = downControl
-  
   elseif CurrentPage == "Setup" then
     table.insert(graphics, {
       Type = "Label",
@@ -776,13 +776,20 @@ if Controls then
     Controls['gain'].EventHandler = HandleFaderChange
     Controls['mute'].EventHandler = HandleMute
   
-    Peak['peak.1'].EventHandler = function(level) HandlePeakLevelChanged(level, 1) end
-    Peak['peak.2'].EventHandler = function(level) HandlePeakLevelChanged(level, 2) end
-    Peak['peak.3'].EventHandler = function(level) HandlePeakLevelChanged(level, 3) end
+    Peak['meter.1'].EventHandler = function(level) HandlePeakLevelChanged(level, 1) end
+    Peak['meter.2'].EventHandler = function(level) HandlePeakLevelChanged(level, 2) end
+    Peak['meter.3'].EventHandler = function(level) HandlePeakLevelChanged(level, 3) end
+    Peak['select'].String = 'Peak'
   
-    RMS['rms.1'].EventHandler = function(level) HandleRMSLevelChanged(level, 1) end
-    RMS['rms.2'].EventHandler = function(level) HandleRMSLevelChanged(level, 2) end
-    RMS['rms.3'].EventHandler = function(level) HandleRMSLevelChanged(level, 3) end
+    for i, o in pairs(Controls['output_peak_meter']) do
+      print(i, o)
+      print(o.String, o.Value, o.Boolean)
+    end
+  
+    RMS['meter.1'].EventHandler = function(level) HandleRMSLevelChanged(level, 1) end
+    RMS['meter.2'].EventHandler = function(level) HandleRMSLevelChanged(level, 2) end
+    RMS['meter.3'].EventHandler = function(level) HandleRMSLevelChanged(level, 3) end
+    RMS['select'].String = 'RMS'
   
     --[subscribe to a change in the ramp gain, and forward that through to the update volume logic as required]
     RampController['gain'].EventHandler = HandleRampPositionChange
