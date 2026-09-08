@@ -10,8 +10,8 @@ table.insert( wiring,
 { 
   "Main Output", 
   "Output A - Wet",
-  "Peak Input 1 Meter",
-  "RMS Input 1 Meter"
+  "Peak Input 1",
+  "RMS Input 1"
 })
 
 --[pre-fader listen post-mute]
@@ -32,14 +32,14 @@ table.insert( wiring,
 { 
   "Passthrough Output Channel 1",
   "Output B - Pre-Fader (Post Mute)",
-  "Peak Input 2 Meter",
-  "RMS Input 2 Meter"
+  "Peak Input 2",
+  "RMS Input 2"
 })
 
 table.insert( wiring, 
 { 
   "Passthrough Output Channel 2",
   "Output C - Pre-Fader (Post Mute)",
-  "Peak Input 3 Meter",
-  "RMS Input 3 Meter"
+  "Peak Input 3",
+  "RMS Input 3"
 })
