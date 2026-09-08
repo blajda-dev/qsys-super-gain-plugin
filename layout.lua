@@ -54,21 +54,30 @@ if CurrentPage == "Control" then
     Legend = "Down",
     PrettyName = "Decrease"
   }
-  
+
+  layout['gain'] = gainControl
+  layout['mute'] = muteControl
+
+  layout['gain_limited_output'] = limitedGainOutput
+  layout['gain_limited_input'] = limitedGainInput
+  layout['stepper_increase'] = upControl
+  layout['stepper_decrease'] = downControl
+
+elseif CurrentPage == "Metering" then
   table.insert(graphics, {
     Type = "Label",
     Text = "Peak Meters",
-    Position = {95 + 75 + 5, 5},
+    Position = {5, 5},
     Size = {75 + (5 * 3), 50},
     Color = {0, 0, 0},
     FontSize = 18,
     HTextAlign = "Center"
   })
 
-  outputAPeakMeter = { 
+    outputAPeakMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5, 55},
+    Position = {5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~Peak~Output A"
@@ -77,7 +86,7 @@ if CurrentPage == "Control" then
   outputBPeakMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5 + 25 + 5, 55},
+    Position = {5 + 25 + 5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~Peak~Output B"
@@ -86,7 +95,7 @@ if CurrentPage == "Control" then
   outputCPeakMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5 + 5 + 25 + 5 + 25, 55},
+    Position = {5 + 5 + 25 + 5 + 25, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~Peak~Output C"
@@ -95,7 +104,7 @@ if CurrentPage == "Control" then
   table.insert(graphics, {
     Type = "Label",
     Text = "RMS Meters",
-    Position = {95 + 75 + 5 + ((25 + 5) * 3), 5},
+    Position = {5 + ((25 + 5) * 3), 5},
     Size = {75 + (5 * 3), 50},
     Color = {0, 0, 0},
     FontSize = 18,
@@ -105,7 +114,7 @@ if CurrentPage == "Control" then
   outputARMSMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 5, 55},
+    Position = {5 + ((25 + 5) * 3) + 5, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~RMS~Output A"
@@ -114,7 +123,7 @@ if CurrentPage == "Control" then
   outputBRMSMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 25 + 10, 55},
+    Position = {5 + ((25 + 5) * 3) + 25 + 10, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~RMS~Output B"
@@ -123,7 +132,7 @@ if CurrentPage == "Control" then
   outputCRMSMeter = { 
     Style = "Meter",
     MeterStyle = "Standard",
-    Position = {95 + 75 + 5 + ((25 + 5) * 3) + 50 + 15, 55},
+    Position = {5 + ((25 + 5) * 3) + 50 + 15, 55},
     Size = {25, 250},
     Color = {124, 155, 207},
     PrettyName = "Meter~RMS~Output C"
@@ -136,15 +145,6 @@ if CurrentPage == "Control" then
   layout['output_rms_meter 1'] = outputARMSMeter
   layout['output_rms_meter 2'] = outputBRMSMeter
   layout['output_rms_meter 3'] = outputCRMSMeter
-
-  layout['gain'] = gainControl
-  layout['mute'] = muteControl
-
-  layout['gain_limited_output'] = limitedGainOutput
-  layout['gain_limited_input'] = limitedGainInput
-  layout['stepper_increase'] = upControl
-  layout['stepper_decrease'] = downControl
-
 elseif CurrentPage == "Setup" then
   table.insert(graphics, {
     Type = "Label",
